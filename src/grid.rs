@@ -27,10 +27,10 @@ impl Grid {
     pub fn tick(&self) -> Grid {
         let mut horizontal = Vec::new();
         // mulithread that part
-        for x in &self.points {
+        for x in self.points {
             let mut vertical = Vec::new();
             for point in x {
-                let neighbors = &self.get_live_neighboring_points(&point);
+                let neighbors = self.get_live_neighboring_points(&point);
                 let cell = point.next_cell_generation(neighbors);
                 vertical.push(cell);
             }
