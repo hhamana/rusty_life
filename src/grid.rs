@@ -129,8 +129,6 @@ fn rules_dead(live_neighbors: u32) -> bool {
     }
 }
 
-<<<<<<< HEAD
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -161,17 +159,7 @@ mod tests {
         let result = next_cell_generation(cell, 3);
         assert_eq!(result.alive, true);
     }
-=======
-#[cfg(test)]
-mod tests {
-    use super::*;
->>>>>>> 2cf0ef686b43b2e3515138758f34f70a338fbaba
 
-    #[test]
-	fn new_grid(){
-        let grid = Grid::new(256, 256);
-        assert_eq!(grid.width, 256);
-        assert_eq!(grid.height, 256);
         assert_eq!(grid.points.len(), 256);
         assert_eq!(grid.points[255].len(), 256);
     }
@@ -183,57 +171,4 @@ mod tests {
         assert_eq!(grid.points[4][5].y, 5);
         assert_eq!(grid.points[4][5].alive, false);
     }
-<<<<<<< HEAD
 }
-=======
-
-    #[test]
-	fn get_neighboring_points_gets_up_to_8_points(){
-        let grid = Grid::new(256, 256);
-        let result = get_live_neighboring_points(&grid, &grid.points[50][30]);
-        assert_eq!(result.len(), 8);
-    }
-
-    #[test]
-	fn get_neighboring_points_gets_points(){
-        let grid = Grid::new(256, 256);
-        let result = get_neighboring_points(&grid, &grid.points[50][30]);
-        assert_eq!(result[0].x, 49);
-        assert_eq!(result[0].y, 29);
-        assert_eq!(result[7].x, 51);
-        assert_eq!(result[7].y, 31);
-    }
-    
-    #[test]
-	fn get_neighboring_points_stays_positive(){
-        let grid = Grid::new(256, 256);
-        let result = get_neighboring_points(&grid, &grid.points[0][30]);
-        assert_eq!(result.len(), 5);
-        assert_eq!(result[0].x, 0);
-        assert_eq!(result[0].y, 29);
-        assert_eq!(result[4].x, 1);
-        assert_eq!(result[4].y, 31);
-    }
-    
-    #[test]
-	fn get_neighboring_points_stays_within_boundaries(){
-        let grid = Grid::new(256, 256);
-        let result = get_neighboring_points(&grid, &grid.points[255][255]);
-        assert_eq!(result.len(), 3);
-        assert_eq!(result[0].x, 254);
-        assert_eq!(result[0].y, 254);
-        assert_eq!(result[1].x, 254);
-        assert_eq!(result[1].y, 255);
-        assert_eq!(result[2].x, 255);
-        assert_eq!(result[2].y, 254);
-    }
-    
-    #[test]
-	fn tick(){
-        let grid = Grid::new(16, 16);
-        let result = tick();
-        assert_eq!(result.points.len(), 16);
-    }
-    
-}
->>>>>>> 2cf0ef686b43b2e3515138758f34f70a338fbaba
