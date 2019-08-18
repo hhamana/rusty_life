@@ -46,7 +46,7 @@ impl Grid {
         let width = self.width;
         let mut horizontal = Vec::new();
         // mulithread that part
-        for x in self.points {
+        for x in &self.points {
             let mut vertical = Vec::new();
             for cell in x {
                 let neighbors = get_live_neighboring_points(&self, &cell);
@@ -66,7 +66,7 @@ impl Grid {
 }
 
 fn get_live_neighboring_points(grid: &Grid, point: &Cell) -> u32 {
-    // +2 for max boundary because range is exclusive at the end
+    // +2 for max boundary because range is exclusive at the end, and i need the axis +1 to look uover the bounds
     let xmin = point.x.saturating_sub(1);
     let xmax = {
         if point.x+2 > grid.width { grid.width } else { point.x+2 }
@@ -94,8 +94,8 @@ fn get_live_neighboring_points(grid: &Grid, point: &Cell) -> u32 {
 
 }
 
-pub fn next_cell_generation(cell: Cell, live_neighbors: u32) -> Cell {
-    /* 
+pub fn next_cell_generation(cell: &Cell, live_neighbors: u32) -> Cell {
+    /*
     example for 11; [{0,0,true},{1,0,true},{2,0,true},{0,1,true},{0,2,true},{2,1,true},{2,2,true},{1,2,true}]
     00 01 02 03 04
     10 11 12 13 14
@@ -136,30 +136,32 @@ mod tests {
     #[test]
     fn dies_of_loneliness() {
         let cell = Cell::new(1,1,true);
-        let result = next_cell_generation(cell, 1);
+        let result = next_cell_generation(&cell, 1);
         assert_eq!(result.alive, false);
     }
 
     #[test]
     fn dies_of_overcrowding() {
         let cell = Cell::new(1,1,true);
-        let result = next_cell_generation(cell, 5);
+        let result = next_cell_generation(&cell, 5);
         assert_eq!(result.alive, false);
     }
 
     #[test]
     fn survives() {
         let cell = Cell::new(1,1,true);
-        let result = next_cell_generation(cell, 2);
+        let result = next_cell_generation(&cell, 2);
         assert_eq!(result.alive, true);
     }
     #[test]
     fn reborns() {
         let cell = Cell::new(1,1,true);
-        let result = next_cell_generation(cell, 3);
+        let result = next_cell_generation(&cell, 3);
         assert_eq!(result.alive, true);
     }
 
+	fn new_grid(){
+        let grid = Grid::new(256, 256);
         assert_eq!(grid.points.len(), 256);
         assert_eq!(grid.points[255].len(), 256);
     }
