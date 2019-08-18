@@ -2,7 +2,7 @@
 mod grid;
 
 fn main() {
-    let grid = grid::Grid::new(256, 256);
+    let grid = grid::Grid::new_empty(256, 256);
 
 }
 

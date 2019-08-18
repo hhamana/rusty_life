@@ -24,7 +24,7 @@ pub struct Grid {
 }
 
 impl Grid {
-    pub fn new(width: usize, height: usize) -> Grid {
+    pub fn new_empty(width: usize, height: usize) -> Grid {
         let mut horizontal = Vec::new();
         for x in 0..width {
             let mut vertical: Vec<Cell> = Vec::new();
@@ -37,6 +37,19 @@ impl Grid {
             width,
             height,
             points: horizontal
+        };
+        grid
+    }
+    pub fn new_from_seed(seed: Vec<Vec<Cell>>) -> Grid {
+        let width = seed.len();
+        let height = seed[0].len();
+        for column in &seed {
+            assert_eq!(column.len(), height)
+        }
+        let grid = Grid {
+            width,
+            height,
+            points: seed
         };
         grid
     }
@@ -135,9 +148,9 @@ mod tests {
     #[test]
     fn count_neighboring_cells_all_alive() {
         let cell_list = vec![
-            vec![Cell::new(0, 0, true), Cell::new(1, 0, true), Cell::new(2, 0, true)],
-            vec![Cell::new(0, 1, true), Cell::new(1, 1, true), Cell::new(2, 1, true)],
-            vec![Cell::new(0, 2, true), Cell::new(1, 2, true), Cell::new(2, 2, true)]
+            vec![Cell::new(0, 0, true), Cell::new(0, 1, true), Cell::new(0, 2, true)],
+            vec![Cell::new(1, 0, true), Cell::new(1, 1, true), Cell::new(1, 2, true)],
+            vec![Cell::new(2, 0, true), Cell::new(2, 1, true), Cell::new(2, 2, true)]
         ];
         let test_grid = Grid {
             width: 3,
@@ -193,17 +206,34 @@ mod tests {
         assert_eq!(result.alive, true);
     }
 
+    #[test]
 	fn new_grid(){
-        let grid = Grid::new(256, 256);
+        let grid = Grid::new_empty(256, 256);
         assert_eq!(grid.points.len(), 256);
         assert_eq!(grid.points[255].len(), 256);
     }
 
     #[test]
 	fn new_grid_is_made_of_points(){
-        let grid = Grid::new(256, 256);
+        let grid = Grid::new_empty(256, 256);
         assert_eq!(grid.points[4][5].x, 4);
         assert_eq!(grid.points[4][5].y, 5);
         assert_eq!(grid.points[4][5].alive, false);
     }
+    
+    #[test]
+	fn new_grid_from_seed(){
+        let cell_list = vec![
+            vec![Cell::new(0, 0, true), Cell::new(0, 1, false), Cell::new(0, 2, true)],
+            vec![Cell::new(1, 0, false), Cell::new(1, 1, true), Cell::new(1, 2, false)],
+            vec![Cell::new(2, 0, true), Cell::new(2, 1, false), Cell::new(2, 2, true)]
+        ];
+        let grid = Grid::new_from_seed(cell_list);
+        assert_eq!(grid.height, 3);
+        assert_eq!(grid.width, 3);
+        assert_eq!(grid.points[1][2].x, 1);
+        assert_eq!(grid.points[2][0].y, 0);
+        assert_eq!(grid.points[1][1].alive, true);
+    }
+    
 }
