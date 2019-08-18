@@ -66,7 +66,7 @@ impl Grid {
 }
 
 fn get_live_neighboring_points(grid: &Grid, point: &Cell) -> u32 {
-    // +2 for max boundary because range is exclusive at the end, and i need the axis +1 to look uover the bounds
+    // +2 for max boundary because range is exclusive at the end, and i need the axis +1 to look over the bounds
     let xmin = point.x.saturating_sub(1);
     let xmax = {
         if point.x+2 > grid.width { grid.width } else { point.x+2 }
@@ -132,7 +132,40 @@ fn rules_dead(live_neighbors: u32) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-        
+    #[test]
+    fn count_neighboring_cells_all_alive() {
+        let cell_list = vec![
+            vec![Cell::new(0, 0, true), Cell::new(1, 0, true), Cell::new(2, 0, true)],
+            vec![Cell::new(0, 1, true), Cell::new(1, 1, true), Cell::new(2, 1, true)],
+            vec![Cell::new(0, 2, true), Cell::new(1, 2, true), Cell::new(2, 2, true)]
+        ];
+        let test_grid = Grid {
+            width: 3,
+            height: 3,
+            points: cell_list
+        };
+        let target_cell = &test_grid.points[1][1];
+        let result = get_live_neighboring_points(&test_grid, target_cell);
+        assert_eq!(result, 8);
+    }
+
+    #[test]
+    fn count_neighboring_cells_all_dead() {
+        let cell_list = vec![
+            vec![Cell::new(0, 0, false), Cell::new(1, 0, false), Cell::new(2, 0, false)],
+            vec![Cell::new(0, 1, false), Cell::new(1, 1, false), Cell::new(2, 1, false)],
+            vec![Cell::new(0, 2, false), Cell::new(1, 2, false), Cell::new(2, 2, false)]
+        ];
+        let test_grid = Grid {
+            width: 3,
+            height: 3,
+            points: cell_list
+        };
+        let target_cell = &test_grid.points[1][1];
+        let result = get_live_neighboring_points(&test_grid, target_cell);
+        assert_eq!(result, 0);
+    }
+
     #[test]
     fn dies_of_loneliness() {
         let cell = Cell::new(1,1,true);
