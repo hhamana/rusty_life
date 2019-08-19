@@ -20,7 +20,7 @@ impl Cell {
 pub struct Grid {
     width: usize,
     height: usize,
-    points: Vec<Vec<Cell>>
+    pub points: Vec<Vec<Cell>>
 }
 
 impl Grid {
@@ -40,6 +40,7 @@ impl Grid {
         };
         grid
     }
+
     pub fn new_from_seed(seed: Vec<Vec<Cell>>) -> Grid {
         let width = seed.len();
         let height = seed[0].len();
@@ -92,9 +93,9 @@ fn get_live_neighboring_points(grid: &Grid, point: &Cell) -> u32 {
 
     for x_axis in xmin..xmax {
         for y_axis in ymin..ymax {
-            println!("{} {}", x_axis, y_axis);
+            // println!("{} {}", x_axis, y_axis);
             match (x_axis == point.x, y_axis== point.y) {
-                (true,true) => println!("Self match"),
+                (true,true) => (), // println!("Self match"),
                 (_,_) => {
                     if grid.points[x_axis][y_axis].alive {
                         live_cells += 1;

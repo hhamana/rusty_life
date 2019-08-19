@@ -1,12 +1,20 @@
-//  mod point;
 mod grid;
+mod draw;
+mod seeds;
 
 fn main() {
-    let grid = grid::Grid::new_empty(256, 256);
-
-}
-
-#[cfg(test)]
-mod tests {
-
+    println!("Ctrl + C to stop the game.");
+    let seed = seeds::random_seed();
+    
+    let grid = grid::Grid::new_from_seed(seed);
+    // let mut iterations = 0;
+    draw::to_sysout(&grid);
+    print!("\x1B[2J");
+    let new_grid = grid.tick();
+    draw::to_sysout(&new_grid);
+    // while iterations < 10 {
+    //     iterations += 1;
+    //     let grid = &grid.tick();
+    // }
+    
 }
