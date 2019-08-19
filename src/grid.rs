@@ -145,6 +145,15 @@ fn rules_dead(live_neighbors: u32) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    
+    #[test]
+    fn create_cell() {
+        let cell = Cell::new(5485,452,true);
+        assert_eq!(cell.x, 5485);
+        assert_eq!(cell.y, 452);
+        assert_eq!(cell.alive, true);
+    }
+
     #[test]
     fn count_neighboring_cells_all_alive() {
         let cell_list = vec![
