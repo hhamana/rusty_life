@@ -21,17 +21,6 @@ fn generate_line(line: &Vec<grid::Cell>) -> String {
     line_string
 }
 
-pub fn to_sysout_line(grid: &grid::Grid) {
-    for line in &grid.points {
-        for cell in line {
-        match cell.alive {
-            true => print!("{}", CHAR_ALIVE),
-            false => print!("{}", CHAR_DEAD)
-        }
-    }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;

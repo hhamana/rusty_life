@@ -24,23 +24,6 @@ pub struct Grid {
 }
 
 impl Grid {
-    pub fn new_empty(width: usize, height: usize) -> Grid {
-        let mut horizontal = Vec::new();
-        for x in 0..width {
-            let mut vertical: Vec<Cell> = Vec::new();
-            for y in 0..height {
-                vertical.push(Cell::new(x, y, false))
-            }
-            horizontal.push(vertical)
-        }
-        let grid = Grid {
-            width,
-            height,
-            points: horizontal
-        };
-        grid
-    }
-
     pub fn new_from_seed(seed: Vec<Vec<Cell>>) -> Grid {
         let width = seed.len();
         let height = seed[0].len();
@@ -216,20 +199,20 @@ mod tests {
         assert_eq!(result.alive, true);
     }
 
-    #[test]
-	fn new_grid(){
-        let grid = Grid::new_empty(256, 256);
-        assert_eq!(grid.points.len(), 256);
-        assert_eq!(grid.points[255].len(), 256);
-    }
+    // #[test]
+	// fn new_grid(){
+    //     let grid = Grid::new_empty(256, 256);
+    //     assert_eq!(grid.points.len(), 256);
+    //     assert_eq!(grid.points[255].len(), 256);
+    // }
 
-    #[test]
-	fn new_grid_is_made_of_points(){
-        let grid = Grid::new_empty(256, 256);
-        assert_eq!(grid.points[4][5].x, 4);
-        assert_eq!(grid.points[4][5].y, 5);
-        assert_eq!(grid.points[4][5].alive, false);
-    }
+    // #[test]
+	// fn new_grid_is_made_of_points(){
+    //     let grid = Grid::new_empty(256, 256);
+    //     assert_eq!(grid.points[4][5].x, 4);
+    //     assert_eq!(grid.points[4][5].y, 5);
+    //     assert_eq!(grid.points[4][5].alive, false);
+    // }
     
     #[test]
 	fn new_grid_from_seed(){

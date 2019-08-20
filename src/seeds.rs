@@ -16,7 +16,7 @@ pub fn random_seed() -> Vec<Vec<grid::Cell>> {
 }
 
 mod test {
-    use super::*;
+    use super::grid;
 
     #[test]
     fn non_random_random_seed() {

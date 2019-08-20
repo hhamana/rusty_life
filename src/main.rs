@@ -19,7 +19,7 @@ fn main() {
     thread::spawn(move || {
         let seed = seeds::random_seed();
         let mut old_grid = grid::Grid::new_from_seed(seed);
-        for i in 0..iterations {
+        for _i in 0..iterations {
             let next_grid = old_grid.tick();
             old_grid = next_grid.tick();
             txclone.send(next_grid).unwrap();
