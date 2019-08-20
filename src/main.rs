@@ -6,11 +6,12 @@ use std::time::{Instant, Duration};
 use std::sync::mpsc;
 
 const DELAY : u64 = 23;
+
 fn main() {
     let now = Instant::now();
 
     // Sender/Receiver pattern on 2 threads
-	let (tx, rx) = mpsc::channel();
+    let (tx, rx) = mpsc::channel();
     let txclone = mpsc::Sender::clone(&tx);
 
     // Sender thread generates ticks
