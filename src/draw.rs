@@ -3,7 +3,7 @@ use super::grid;
 const CHAR_ALIVE: &'static str = "Ｏ";
 const CHAR_DEAD: &'static str = "　";
 
-pub fn to_sysout(grid: &grid::Grid) {
+pub fn to_sysout(grid: grid::Grid) {
     for line in &grid.points {
         let line_string = generate_line(&line);
         println!("{}", line_string)

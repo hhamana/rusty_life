@@ -55,7 +55,7 @@ impl Grid {
         grid
     }
 
-    pub fn tick(self) -> Grid {
+    pub fn tick(&self) -> Grid {
         let height = self.height;
         let width = self.width;
         let mut horizontal = Vec::new();

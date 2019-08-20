@@ -2,7 +2,7 @@ use super::grid;
 use rand::Rng;
 
 pub fn random_seed() -> Vec<Vec<grid::Cell>> {
-    let dimensions = rand::thread_rng().gen_range(0, 65);
+    let dimensions = rand::thread_rng().gen_range(60, 61);
     let mut seed = Vec::new();
     for x in 0..dimensions {
         let mut column = Vec::new();
