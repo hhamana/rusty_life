@@ -26,7 +26,6 @@ fn main() {
     });
     // Receiver (also main) thread draws
     for received in rx {
-        print!("\x1B[2J");
 		draw::to_sysout(received);
         println!("{:?} elapsed. Press Ctrl+C or close the terminal to kill the game.", now.elapsed());
     }
