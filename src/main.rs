@@ -12,7 +12,6 @@ fn main() {
 
     // Sender/Receiver pattern on 2 threads
     let (tx, rx) = mpsc::channel();
-    let txclone = mpsc::Sender::clone(&tx);
 
     // Sender thread generates ticks
     thread::spawn(move || {
@@ -21,7 +20,7 @@ fn main() {
         loop {
             let next_grid = old_grid.tick();
             old_grid = next_grid.tick();
-            txclone.send(next_grid).unwrap();
+            tx.send(next_grid).unwrap();
             thread::sleep(Duration::from_millis(DELAY));
         }
     });
