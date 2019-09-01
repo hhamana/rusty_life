@@ -100,30 +100,14 @@ pub fn next_cell_generation(cell: &Cell, live_neighbors: u32) -> Cell {
     30 31 32 33 34
     40 41 42 43 44
     */
-    let lives_on = match cell.alive { 
-        true => rules_alive(live_neighbors),
-        false => rules_dead(live_neighbors)
+    let lives_on = match (cell.alive, live_neighbors) { 
+        (false, 3) => true,
+        (true, 2) => true,
+        (true, 3) => true,
+        (_, _) => false,
     };
     let cell = Cell::new(cell.x, cell.y, lives_on);
     cell
-}
-
-fn rules_alive(live_neighbors: u32) -> bool {
-    if live_neighbors < 2 {
-        false
-    } else if live_neighbors > 3 {
-        false
-    } else {
-        true
-    }
-}
-
-fn rules_dead(live_neighbors: u32) -> bool {
-    if live_neighbors == 3 {
-        true
-    } else {
-        false
-    }
 }
 
 #[cfg(test)]
@@ -198,21 +182,6 @@ mod tests {
         let result = next_cell_generation(&cell, 3);
         assert_eq!(result.alive, true);
     }
-
-    // #[test]
-	// fn new_grid(){
-    //     let grid = Grid::new_empty(256, 256);
-    //     assert_eq!(grid.points.len(), 256);
-    //     assert_eq!(grid.points[255].len(), 256);
-    // }
-
-    // #[test]
-	// fn new_grid_is_made_of_points(){
-    //     let grid = Grid::new_empty(256, 256);
-    //     assert_eq!(grid.points[4][5].x, 4);
-    //     assert_eq!(grid.points[4][5].y, 5);
-    //     assert_eq!(grid.points[4][5].alive, false);
-    // }
     
     #[test]
 	fn new_grid_from_seed(){
