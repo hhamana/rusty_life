@@ -5,8 +5,10 @@ use std::thread;
 use std::time::{Instant, Duration};
 use std::sync::mpsc;
 
-const DELAY : u64 = 23;
+/// this almost equates to a frame refresh rate, in ms.
+const DELAY : u64 = 50;
 
+/// launches the grid, delegating most of the hard work to other functions. It does howver define a multi-threaded environnment.
 fn main() {
     let now = Instant::now();
 

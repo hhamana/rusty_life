@@ -6,6 +6,7 @@ pub struct Cell {
 }
 
 impl Cell {
+    /// allows the convenient creation of a new cell
     pub fn new(x: usize, y: usize, alive: bool) -> Cell {
         let cell = Cell {
             x,
@@ -16,14 +17,17 @@ impl Cell {
     }
 }
 
-// Grid 
+/// Grid 
+/// defines the data for a grid
 pub struct Grid {
     width: usize,
     height: usize,
     pub points: Vec<Vec<Cell>>
 }
 
+/// implements the functions for a grid to function
 impl Grid {
+    /// creates a new grid from a seed. the seed is generated in the seed.rs module
     pub fn new_from_seed(seed: Vec<Vec<Cell>>) -> Grid {
         let width = seed.len();
         let height = seed[0].len();
@@ -37,7 +41,7 @@ impl Grid {
         };
         grid
     }
-
+    /// generates a grid update
     pub fn tick(&self) -> Grid {
         let height = self.height;
         let width = self.width;
@@ -62,6 +66,7 @@ impl Grid {
     }
 }
 
+///  gets all points neighbouring a cell, with extra care regarding the edges of the vectors. It cuts off and does not continue on the opposite side.
 fn get_live_neighboring_points(grid: &Grid, point: &Cell) -> u32 {
     // +2 for max boundary because range is exclusive at the end, and i need the axis +1 to look over the bounds
     let xmin = point.x.saturating_sub(1);
@@ -91,6 +96,7 @@ fn get_live_neighboring_points(grid: &Grid, point: &Cell) -> u32 {
 
 }
 
+/// generates a cell, determining if it should be alive or not
 pub fn next_cell_generation(cell: &Cell, live_neighbors: u32) -> Cell {
     /*
     example for 11; [{0,0,true},{1,0,true},{2,0,true},{0,1,true},{0,2,true},{2,1,true},{2,2,true},{1,2,true}]
