@@ -1,34 +1,37 @@
-mod grid;
-mod draw;
-mod seeds;
-use std::thread;
-use std::time::{Instant, Duration};
-use std::sync::mpsc;
+use amethyst::{
+    core::transform::TransformBundle,
+    prelude::*,
+    renderer::{
+        plugins::{RenderFlat2D, RenderToWindow},
+        types::DefaultBackend,
+        RenderingBundle,
+    },
+    utils::application_root_dir,
+};
 
-/// this almost equates to a frame refresh rate, in ms.
-const DELAY : u64 = 50;
+mod state;
 
-/// launches the grid, delegating most of the hard work to other functions. It does howver define a multi-threaded environnment.
-fn main() {
-    let now = Instant::now();
+fn main() -> amethyst::Result<()> {
+    amethyst::start_logger(Default::default());
 
-    // Sender/Receiver pattern on 2 threads
-    let (tx, rx) = mpsc::channel();
+    let app_root = application_root_dir()?;
 
-    // Sender thread generates ticks
-    thread::spawn(move || {
-        let seed = seeds::random_seed();
-        let mut old_grid = grid::Grid::new_from_seed(seed);
-        loop {
-            let next_grid = old_grid.tick();
-            old_grid = next_grid.tick();
-            tx.send(next_grid).unwrap();
-            thread::sleep(Duration::from_millis(DELAY));
-        }
-    });
-    // Receiver (also main) thread draws
-    for received in rx {
-		draw::to_sysout(received);
-        println!("{:?} elapsed. Press Ctrl+C or close the terminal to kill the game.", now.elapsed());
-    }
+    let resources = app_root.join("resources");
+    let display_config = resources.join("display_config.ron");
+
+    let game_data = GameDataBuilder::default()
+        .with_bundle(TransformBundle::new())?
+        .with_bundle(
+            RenderingBundle::<DefaultBackend>::new()
+                .with_plugin(
+                    RenderToWindow::from_config_path(display_config)
+                        .with_clear([0.34, 0.36, 0.52, 1.0]),
+                )
+                .with_plugin(RenderFlat2D::default()),
+        )?;
+
+    let mut game = Application::new(resources, state::MyState, game_data)?;
+    game.run();
+
+    Ok(())
 }
