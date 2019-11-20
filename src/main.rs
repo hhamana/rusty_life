@@ -1,5 +1,4 @@
 mod grid;
-mod draw;
 mod seeds;
 use std::thread;
 use std::time::{Instant, Duration};
@@ -28,7 +27,7 @@ fn main() {
     });
     // Receiver (also main) thread draws
     for received in rx {
-		draw::to_sysout(received);
+        println!("{}", received);
         println!("{:?} elapsed. Press Ctrl+C or close the terminal to kill the game.", now.elapsed());
     }
 }
