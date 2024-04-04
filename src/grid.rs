@@ -1,3 +1,11 @@
+use std::fmt;
+
+// Compil-time literal constants. Cell Display.
+const CHAR_ALIVE: &'static str = "Ｏ";
+const CHAR_DEAD: &'static str = "　";
+const NEWLINE: &'static str = "\n";
+const CLEAR: &'static str = "\x1B[2J";
+
 // Cell
 pub struct Cell {
     pub x: usize,
@@ -17,6 +25,14 @@ impl Cell {
     }
 }
 
+impl fmt::Display for Cell {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self.alive {
+            true => write!(f, "{}", CHAR_ALIVE),
+            false => write!(f, "{}", CHAR_DEAD),
+        }
+    }
+}
 /// Grid 
 /// defines the data for a grid
 pub struct Grid {
@@ -24,6 +40,7 @@ pub struct Grid {
     height: usize,
     pub points: Vec<Vec<Cell>>
 }
+
 
 /// implements the functions for a grid to function
 impl Grid {
@@ -63,6 +80,19 @@ impl Grid {
             points: horizontal
         };
         new_grid
+    }
+}
+
+impl fmt::Display for Grid {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", CLEAR);
+        for line in &self.points {
+            for cell in line {
+                write!(f, "{}", cell);
+            }
+            write!(f, "{}", NEWLINE);
+        }
+        Ok(())
     }
 }
 
